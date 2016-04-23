@@ -1,20 +1,138 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Node.js Chat</title>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="style.css" />
-		<script src="socket.io/socket.io.js"></script>
-		<script src="jquery.min.js"></script>
-		<script src="client.js"></script>
-	</head>
-	<body>
-		<header>Node.js Chat <a href="http://nodecode.de/">von NodeCode</a></header>
-		<ul id="content"></ul>
-		<footer>
-			<input id="name" type="text" placeholder="dein Name" />
-			<input id="text" type="text" placeholder="schreibe etwas..." />
-			<input id="senden" type="submit" class="btn" value="senden" />
-		</footer>
-	</body>
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="google" content="notranslate" />
+    <meta name="author" content="Hermann Rösser"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400|Open+Sans:400,500,700" />
+	<link rel="stylesheet" type="text/css" href="css/style.min.css" />
+
+    <title>Node.js chat</title>
+	<!-- script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="js/simpleClock.min.js"></script>
+	<script type="text/javascript" src="js/client.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+	
+    <!--  **** Copyrights: 
+	https://github.com/ticktoo/simpleClock
+	https://github.com/pubnub/pubnub-chat-channel-presence
+	http://handlebarsjs.com/
+
+	Frontend inspired by 'PubNub Channel Presence'
+	https://github.com/pubnub/pubnub-chat-channel-presence
+	**** -->  
+</head>
+
+<body>
+	<div id="main">
+
+		 <!--  ***** Sidebar Top ********* -->
+		 <div class="sidebar">
+
+			<!-- ***** Clock ********* -->
+			<div id="clock"> 
+				<div id="time" class="time"></div>
+				<div id="date" class="date"></div>
+			</div>
+
+			<!-- ***** Github Octocat ********* -->
+			<a class="social" href="https://github.com/hroesser/Node.js-Chat" target="_blank" title="this project at github">
+				<span class="github-logo" > </span>
+			</a>
+
+			<!-- ***** debug ********* 
+			<div style="position:fixed;left:145px;font-size:12px;" >chatCt: <span id="displayCountChat"></span></div>
+			<div style="position:fixed;left:145px; top: 35px; font-size:12px;" > <div id="cbh"></div></div>
+			<div style="position:fixed;left:145px; top: 55px; font-size:12px;" > <div id="cbi"></div></div>
+			-->
+
+			<!-- ***** orange bar ********* -->
+			<div class="time-hr"></div>
+
+			<!--  ***** Server Messages ********* -->
+			<div id="update-area" class="update-area">
+
+				<!--*** Handlebars JS Template Engine. http://handlebarsjs.com/  ***-->
+				<script id="update-template" type="text/x-handlebars-template">
+					<div>
+						<div class="update-item">
+					   		<span class="update-time">{{time}}</span>
+							{{servermessage}}
+					   	</div>
+					   	<div class="update-line"></div>
+					</div>
+				</script> 
+			</div>
+
+		</div> <!-- /Sidebar-->
+
+		<!--  ***** Sidebar Down, Userbox ********* -->
+		<div class="userbox" >
+				<div>
+					   <div class="update-item" style="" >
+						User online (<span id="usercount">0</span>)
+					   </div>
+					   <div class="update-line"></div>
+				</div>
+				<div id="onlineusers">
+				</div>
+		</div><!-- /userbox -->
+
+		<!--  ***** Right Bar, Headline, Greeting, Logo...  ********* -->
+		<div class="top-header-chat">
+					<div id="top-header-chat-left" class="top-header-chat-left"></div>
+					<div class="top-servermessage" id="statusBar"></div>
+					<div class="top-header-chat-right">Node.js Chat</div>
+
+					<!-- Chat Box Input Wrapper -->
+					<div class="chat-box-plain">
+
+							<!-- *** Chat Input. visibility set by Jq.-->
+							<div class="chat-box-area" id="chat-box-send">
+								<div class="chat-box-area-inset">
+									<div class="relative">
+										<input id="text" class="chat-box-input" placeholder="chat, min. 4 char." maxlength="210" />
+										<button id="senden" class="chat-box-button">Send</button>
+									</div>
+								</div>
+							</div>
+
+							<!-- *** Login. visibility set by Jq. -->
+							<div class="chat-box-area" id="chat-box-login">
+								<div class="chat-box-area-inset">
+									<div class="relative">
+										<input id="name" class="chat-box-input" placeholder="Login" maxlength="14" />
+										<button id="login" class="chat-box-button">Login</button>
+									</div>
+								</div>
+							</div>
+							<button id="logout" class="logout-button">Logout</button>
+					</div>
+
+		</div><!-- /top-header-chat -->
+
+		<!-- Chat Content Area, wrapper for chat messages -->
+		<div id="talk-box-output" class="chat-box-output">
+					<!--*** Handlebars JS Template Engine. http://handlebarsjs.com/  ***-->
+					<script id="chat-box-template" type="text/x-handlebars-template">
+					<div class="chat-box-main">
+				        <div class="chat-box-person">
+							<div class="relative">
+						        <div class="chat-box-message-name"> {{user}} </div>
+						        <div class="chat-box-message-time">{{time}}</div>
+						        <div class="chat-box-message">{{message}}</div>
+						        <div class="clear"></div>
+						        <div class="chat-box-person-line"></div>
+				        	</div>
+						</div>
+				    </div>
+					</script>
+		</div>  <!--  id="talk-box-output" -->
+
+  	</div><!-- /main -->
+</body>
 </html>
