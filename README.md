@@ -3,6 +3,8 @@
 A simple Chat application based on node.js, socket.io, jQuery on frontend. 
 It's a fork of https://github.com/nodecode/Node.js-Chat
 
+![screenshot](screenshot/screen.jpg "Nodejs chat")
+
 ### Requirements
 npm - node package manager
 
