@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 		jshint: {
-		  files: ['gruntfile.js', 'server.js', 'public/js/client.js']
+		  files: ['gruntfile.js', 'server.js', 'public/js/client.js', 'public/js/simpleClock.js']
 		},
 		
 		uglify: {
