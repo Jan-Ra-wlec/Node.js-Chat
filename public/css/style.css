@@ -381,6 +381,17 @@ body {
     font-weight: 500;
     width: 440px;
 }
+
+/*/<span>/*/
+.chat-box-message-pre {
+	color: orange;
+    width: auto;
+}
+/*/<span>/*/
+.chat-box-message-norm {
+
+}
+
 .chat-box-message-name {
     float: left;
     width: 130px;
@@ -391,6 +402,9 @@ body {
     top: 2px;
     right: 2px;
     text-align: right;
+}
+.text-orange {
+	color: orange;
 }
 
 a {

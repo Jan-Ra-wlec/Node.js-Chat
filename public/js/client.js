@@ -17,6 +17,7 @@ $(document).ready(function()	{
 	// hide input elements for chat, show login first
 	$('#chat-box-send').hide();
 	$('#logout').hide();
+	$('#layer-pm-to').hide();
 
 	getTimeString = function(zeitObj) {
 		var zeit = new Date(zeitObj);
@@ -52,7 +53,20 @@ $(document).ready(function()	{
 		var tstring = getTimeString(data.zeit);
 		var source   = $("#chat-box-template").html(); // see index.html
 		var template = Handlebars.compile(source);
-		var chatvars = {time: tstring, user: data.name, message: data.text};
+		// to mark a user in color here
+		var	displayUserClass = '';
+		// to prepend a colored prefix "to: user"
+		var msgPre = '';
+
+		if (data.type =='privateTo') {
+			displayUserClass ='text-orange';		// if PM, simply turn the color orange
+		}
+		else if (data.type == 'privateSelf') {
+			msgPre = 'to: ' + data.goesTo + ': ';
+		}
+		var chatvars = {time: tstring, fromUser: data.name, messagePre: msgPre, message: data.text , fromUserClass: displayUserClass };
+		// feed the Handlebars Template 			style="{{from_user_style}}"> {{from_user}} </div>
+
 		var chat_html = template(chatvars);
 
 		$('#talk-box-output').append(chat_html).hide().fadeIn('slow');
@@ -137,8 +151,10 @@ $(document).ready(function()	{
 				$('#'+currentPmObj.span).html(user);
 				$('#'+currentPmObj.span).removeClass("online-user-pm");
 				$('#'+currentPmObj.span).attr( {'title':'click for private message'});
+				$('#layer-pm-to').text('');
+				$('#layer-pm-to').hide();
 				$('#text').val('');
-				$('#text').focus();
+				$('#text').focus();					
 			//}
 			currentPmObj = {};
 		} else
@@ -155,7 +171,10 @@ $(document).ready(function()	{
 		$('#'+span).html('private: ' + user);
 		$('#'+span).addClass("online-user-pm");	//attrSpan['title'] = 'click for private message'; $("img").attr("width","500");
 		$('#'+span).attr({'title':'click again to discard private message'});
-		$('#text').val('to ['+ user+']: ');
+
+		$('#layer-pm-to').text('to: '+ user );
+		$('#layer-pm-to').show();
+		//$('#text').val('to ['+ user+']: ');
 		$('#text').focus();
 		currentPmObj = { 'div': div, 'span': span, 'user': user };
 		console.log('togglePmOn: pm to '+ user + ' calledby: ' + calledby );	
@@ -211,7 +230,7 @@ $(document).ready(function()	{
 		}
 	});
 
- 	// reveiving chatmessage
+ 	// reveiving chatmessage, public and private
 	socket.on('chatMessage', function (data) {
 		if ((userObj.loggedIn === true) || (data.logoutMessage === true)) { 
 			writeChatMsg(data);
@@ -227,18 +246,12 @@ $(document).ready(function()	{
 		if (userObj.loggedIn === true) {
 			if (text.length >= chatMinimumChar)  {
 
-				// bool setPrivate, string pmTo global
-	 			if (userObj.setPrivate)		{
-						pTo = userObj.pmTo;
-				}
+				// stay in privatmode until user toggles it off 
+	 			if (userObj.setPrivate === true)		{
+					pTo = userObj.pmTo;
+				} 
 				// fire the message over socket
 				socket.emit('userMessage', { name: userObj.chatName, text: text, privateTo: pTo });
-
-				// stay in privatmode until user toggles it off 
-	 			if (userObj.setPrivate)		{
-					pTo = userObj.pmTo;
-					$('#text').val('to ['+ userObj.pmTo +']: ');
-				} else 
 				$('#text').val('');
 			} else
 				console.log('chatten(): text too short!..');

@@ -94,8 +94,12 @@
 							<!-- *** Chat Input. visibility set by Jq.-->
 							<div class="chat-box-area" id="chat-box-send">
 								<div class="chat-box-area-inset">
-									<div class="relative">
-										<input id="text" class="chat-box-input" placeholder="chat, min. 4 char." maxlength="210" />
+									<div class="relative" id="chat-box-pre">
+
+<span id="layer-pm-to" style="position: relative; top: 5px; left: 10px; letter-spacing: 0px; font-size: 17px; color: orange; margin: 0 5px 0 0;" id="layer-pm"></span>
+
+										<input id="text" style="position: relative; width: auto;" class="chat-box-input" placeholder="chat, min. 4 char." maxlength="210" />
+	
 										<button id="senden" class="chat-box-button">Send</button>
 									</div>
 								</div>
@@ -105,7 +109,7 @@
 							<div class="chat-box-area" id="chat-box-login">
 								<div class="chat-box-area-inset">
 									<div class="relative">
-										<input id="name" class="chat-box-input" placeholder="Login" maxlength="14" />
+										<input id="name" class="chat-box-input" placeholder="Login" maxlength="12" />
 										<button id="login" class="chat-box-button">Login</button>
 									</div>
 								</div>
@@ -122,9 +126,11 @@
 					<div class="chat-box-main">
 				        <div class="chat-box-person">
 							<div class="relative">
-						        <div class="chat-box-message-name"> {{user}} </div>
+						        <div class="chat-box-message-name {{fromUserClass}}">{{fromUser}}</div>
 						        <div class="chat-box-message-time">{{time}}</div>
-						        <div class="chat-box-message">{{message}}</div>
+						        <div class="chat-box-message">
+									<span class="chat-box-message-pre"><b>{{messagePre}}</b></span><span class="chat-box-message-norm">{{message}}</span>  
+								</div>
 						        <div class="clear"></div>
 						        <div class="chat-box-person-line"></div>
 				        	</div>

@@ -93,29 +93,32 @@ io.sockets.on('connection', function (socket) {
 	socket.on('userMessage', function (data) {
 		if ( isUserOnline(data.name) === true) {
 
+			var sender = data.name;
 			// if the property 'privateTo' is sent 
-			if (data.privateTo !== null) { 
+			if (data.privateTo !== null) {
+ 
 				console.log(data.text + ' is private to ' + data.privateTo );
 				// important! pick the corresonding socket of the obj. 'validChatUsers' and send the pm exclusivly through it
-				// the 'type' property is 'private'
 				var targetSocket = validChatUsers[data.privateTo];
 				
 				try {
-					targetSocket.emit('chatMessage', { zeit: new Date(), name: data.name, text: data.text, type: 'private' });
+					// ***** PRIVATE MESSAGE => to recipient ***********
+					targetSocket.emit('chatMessage', { zeit: new Date(), name: sender, text: data.text, type: 'privateTo' });
 				} catch (err) {
 					console.log("Error:", err);
 				}
 			
-				// send back the msg. to sender
-				targetSocket = validChatUsers[data.name];
-				targetSocket.emit('chatMessage', { zeit: new Date(), name: data.name, text: '[you send to: <b>'+ data.privateTo + '</b>]' + data.text, type: 'private' });
-
+				// ***** PUBLIC MESSAGE => return to sender ***********
+				// send back the msg. to sender  <b>: orange !
+				targetSocket = validChatUsers[sender];
+				targetSocket.emit('chatMessage', { zeit: new Date(), name: sender, text: data.text, type: 'privateSelf', goesTo: data.privateTo });
 	
-			} else {  // public 
-	 			console.log(data.name + ' sends: ' + data.text );
-				io.sockets.emit('chatMessage', { zeit: new Date(), name: data.name, text: data.text, type: 'public' });
+			} else {  // ***** PUBLIC MESSAGE ***********
+	 			console.log(sender + ' sends: ' + data.text );
+				io.sockets.emit('chatMessage', {zeit: new Date(), name: sender, text: data.text, type: 'public' });
 			}
-		} 
+		}
+
 	});
 });
 
