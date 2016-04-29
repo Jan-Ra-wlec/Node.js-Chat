@@ -3,10 +3,7 @@ $(document).ready(function()	{
 	var socket = io.connect();
 
 	/** operational variables. keep them up to date whilst login/out/pm etc. **/
-	var loggedIn = false,
-	  	chatName = '',
-	  	setPrivate = false,
-	  	pmTo = '',
+	var	userObj = {chatname:'chatname', setPrivate:false, pmTo:'pmTo', loggedIn: false	},// fill with default val. 
 	  	chatCount = 0,
 		serverMsgCount = 0,
 		currentPmObj = {}; 			// store the current PM values: div, span (for display), (to)user
@@ -16,28 +13,6 @@ $(document).ready(function()	{
 		maxCountServerMsg = 9, 		// max. servermsg. to display
 		chatMinimumChar = 4;
 
-
-/*  
-	@TODO - Username is chosen- choose another
-	 - nach PM und absenden, reset PM Status
-	 - eigene Fktn. für PM status set/reset
-	  - eigene chatmsg. anzeigen
-	- nach logout chatwindow leeren 
-	
-	- servermsg. typ norm/warn
-	- servermsg. an alle 
-
-	- strip tags in chat msg. and name
-	- pm ordnen. 'pm to' usw. in beide richtungen 
-	- Spamschutz !
-
-	- wenn User den chat verlässt, lösche korrespond. PM Verbindungen
-	- .. und lösche das chatwindow. der count beginntbei 0, wird irgendwann sehr lang.. 
-	- reset chatCount bei login ??
-	- tooltip bei text too short
-	- green head in userlist
-
-*/
 	$('#clock').simpleClock();
 	// hide input elements for chat, show login first
 	$('#chat-box-send').hide();
@@ -118,24 +93,24 @@ $(document).ready(function()	{
 			var attrSpan = {}; 
 			//css: circle-header14 circle-header_norm / circle-header_pm  / circle-header_current
 
-			attrDiv['class']	= 'circle-header14';
-			attrDiv['id'] 		= div_id;    // (grunt) jshint:  ^ ['id'] is better written in dot notation.
+			attrDiv.class	= 'circle-header14';
+			attrDiv.id 		= div_id;    // (grunt) jshint:  ^ ['id'] is better written in dot notation.
 
-			attrSpan['class'] 	= 'online-user';
-			attrSpan['id'] 		= span_id;
+			attrSpan.class 	= 'online-user';
+			attrSpan.id		= span_id;
 
 			// our user shouldn't PM himself..
-			if (chatName!= value)	{ 
-				attrDiv['class']+= ' circle-header-norm cursor-pointer ';
-				attrDiv['onClick'] = onClick;
-				attrDiv['title'] = 'click for private message';
+			if (userObj.chatName!== value)	{ 
+				attrDiv.class+= ' circle-header-norm cursor-pointer ';
+				attrDiv.onClick = onClick;
+				attrDiv.title = 'click for private message';
 
-				attrSpan['class']+= ' cursor-pointer';
-				attrSpan['onClick'] = onClick;
-				attrSpan['title'] = 'click for private message';
+				attrSpan.class+= ' cursor-pointer';
+				attrSpan.onClick = onClick;
+				attrSpan.title = 'click for private message';
 			} else { 
-				attrDiv['class']+= ' circle-header-current';   // green user icon for this user
-				attrSpan['class']+= ' online-user-current';	// and green text
+				attrDiv.class+= ' circle-header-current';   // green user icon for this user
+				attrSpan.class+= ' online-user-current';	// and green text
 			}
 			// we cannot declare a click() function for the user in the list, since we cannot define a useful id
 			// this sequence is tiny enough - no Handlebars 
@@ -152,8 +127,8 @@ $(document).ready(function()	{
 	// called by click action or by Socket (user leaves inmidst PM conversation)
 	togglePmOff = function(user,calledby) {
 		if (currentPmObj.user === user) {
-			setPrivate = false;
-			pmTo = '';
+			userObj.setPrivate = false;
+			userObj.pmTo = '';
 			console.log('togglePmOff [by'+ calledby +']: switch to norm chat, was to '+ user);
 			//if (calledby=='privateMsg')	{	
 				$('#'+currentPmObj.div).removeClass("circle-header-pm");
@@ -172,8 +147,8 @@ $(document).ready(function()	{
 
 	// called by privateMsg()    togglePmOn(user,'privateMsg');
 	togglePmOn = function(div,span,user,calledby) {
-		setPrivate = true;
-		pmTo = user;
+		userObj.setPrivate = true;
+		userObj.pmTo = user;
 		$('#'+div).removeClass("circle-header-norm");
 		$('#'+div).addClass("circle-header-pm");
 		$('#'+div).attr( {'title':'click again to discard private message'});
@@ -188,9 +163,9 @@ $(document).ready(function()	{
 
 	privateMsg = function (div, span, user) {  // privateMsg called:  user_1 span_1  opra
 		// toggle pm/normal chat mode    ------  if (data.user == pmTo) togglePmOff(data.user )
-		if (setPrivate && (user === currentPmObj.user)) {
+		if ((userObj.setPrivate === true) && (user === currentPmObj.user)) {
 			togglePmOff(user,'privateMsg');
-		} else if (setPrivate === false) {
+		} else if (userObj.setPrivate === false) {
 			currentPmObj = { 'div': div, 'span': span, 'user': user }; 
 			togglePmOn(div,span,user,'privateMsg');
 		} else {
@@ -200,7 +175,7 @@ $(document).ready(function()	{
 
 	// write the userlist, down/left
 	socket.on('userList', function (data) {
-		if (loggedIn === true)
+		if (userObj.loggedIn === true)
 			writeUserList(data);
 	});
 
@@ -210,7 +185,7 @@ $(document).ready(function()	{
 
 		// wird nur nach dem Loginprozess aufgerufen
 		if (true === data.loggedIn) {   
-			loggedIn = true;
+			userObj.loggedIn = true;
 			console.log('successfully logged in ..');
 			$('#chat-box-login').hide();
  			$('#chat-box-send').show();
@@ -226,10 +201,10 @@ $(document).ready(function()	{
  	// new servermessage (top/left)
 	// e.g. user joins, leaves
 	socket.on('serverMessage', function (data) {
-		if ((loggedIn === true) || (data.logoutMessage === true)) { 
+		if ((userObj.loggedIn === true) || (data.logoutMessage === true)) { 
 			writeServerMessage(data);
 			// if the remote user logs off whilst in PM Conversation here
-			if (data.logoutMessage && (data.logoutUser == pmTo) && setPrivate )  { 
+			if (data.logoutMessage && (data.logoutUser == userObj.pmTo) && (true === userObj.setPrivate ))  { 
 				togglePmOff(data.logoutUser,'socket');
 				console.log('Server calls togglePmOff for user: ' + data.logoutUser );
 			}
@@ -238,7 +213,7 @@ $(document).ready(function()	{
 
  	// reveiving chatmessage
 	socket.on('chatMessage', function (data) {
-		if ((loggedIn === true) || (data.logoutMessage === true)) { 
+		if ((userObj.loggedIn === true) || (data.logoutMessage === true)) { 
 			writeChatMsg(data);
 		}
 	});
@@ -249,45 +224,43 @@ $(document).ready(function()	{
 		var pTo = null;
 
 		console.log('try to send:' +text);
-		if (loggedIn) {
+		if (userObj.loggedIn === true) {
 			if (text.length >= chatMinimumChar)  {
 
 				// bool setPrivate, string pmTo global
-	 			if (setPrivate)		{
-						pTo = pmTo;
+	 			if (userObj.setPrivate)		{
+						pTo = userObj.pmTo;
 				}
 				// fire the message over socket
-				socket.emit('userMessage', { name: chatName, text: text, privateTo: pTo });
+				socket.emit('userMessage', { name: userObj.chatName, text: text, privateTo: pTo });
 
 				// stay in privatmode until user toggles it off 
-	 			if (setPrivate)		{
-					pTo = pmTo;
-					$('#text').val('to ['+ pmTo +']: ');
+	 			if (userObj.setPrivate)		{
+					pTo = userObj.pmTo;
+					$('#text').val('to ['+ userObj.pmTo +']: ');
 				} else 
 				$('#text').val('');
 			} else
 				console.log('chatten(): text too short!..');
 				// here is a tooltip e.g. useful..
-
-
 		} else {
 			$('#text').val('bitte einloggen');
 		} 
 	};
 
 	login = function() {
-		if (loggedIn === false) {
-			chatName = $('#name').val().trim();
+		if (userObj.loggedIn === false) {
+			userObj.chatName = $('#name').val().trim();
 			// socket send. login attempt
-			socket.emit('login', { name: chatName });
+			socket.emit('login', { name: userObj.chatName });
  		}
 	};
 
 	logout = function() {
-		if (loggedIn === true) {
-	 		socket.emit('logout', { name: chatName });
-	 		loggedIn = false;
-			chatName = '';
+		if (userObj.loggedIn === true) {
+	 		socket.emit('logout', { name: userObj.chatName });
+	 		userObj.loggedIn = false;
+			userObj.chatName = '';
 			console.log('currently logged out ..') ;
 			//socket.close();			
 			$('#chat-box-send').hide();
