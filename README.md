@@ -1,4 +1,3 @@
-
 ## Nodejs Chat
 A simple Chat application based on node.js, socket.io, jQuery on frontend. 
 It's a fork of https://github.com/nodecode/Node.js-Chat
@@ -32,23 +31,29 @@ https://github.com/pubnub/pubnub-chat-channel-presence
 ### General
 this software is for experimental and maybe tutorial use only, not for professional or commercial use. Use it at your own risk! 
 
-### Install:
-`npm install`
+### Download
+ - create a useful directory. to avoid confusion, not unter `/htdocs`, `/var/www/html`. Apache has not to deal with it!
+ - `git clone <url> .`
+
+### Install
+`npm install` 
 
 ### Running
 after installing, run `node server.js` on console, then point your browser(s) on your machine to 
 http://127.0.0.1:8080/ and have fun! of course, you can change the port in *config.json*.
-the app makes heavy use of *console.log()* both server- and clientside. throw it off if you wish. to shutdown the server app, type [CTRL] C
+the app makes heavy use of *console.log()* both server- and clientside. throw it off if you wish. to shutdown the server app, hit [CTRL] C
 
 ### Usage
 after login with a valid username, type text in the input bar, min. four char. click 'send' or hit Enter. for a PM, click a username in the lower left panel, which must appear red now. your messages go private now. to switch to public conversation, click again this user.
 
+### Version
+current version 0.9.0. check regular to see changes. chat working, but still with issues listed below. 
+
 ### Bugs/Issues
 a few major issues to be fixed are:
- - fix chat input bar content when send/receive PM 
  - sort the	multilingualism german/english
- - filter text input
  - set some `settimeOut()` to avoid spamming
  - place some nice tooltips
+ - LESS for Css, colors etc. (developer issue)
  - etc..
 

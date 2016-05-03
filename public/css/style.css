@@ -1,5 +1,6 @@
 body {
-  background: #fefef2 url('/img/blurred1.jpg') no-repeat fixed;
+  background: #fefef2 url('/img/blurred1.jpg') no-repeat fixed 0 0;
+
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -288,53 +289,63 @@ body {
     margin: 5px 0;
 }
 
+
+
+
+/* ---- User online ---- */
+
+.onlineusers > div {
+	/*/ background: lightgray;/*/
+	letter-spacing:0;
+	float: left;
+	height: 37px;
+	width: 150px;
+	position: relative; 
+	box-sizing: border-box; 
+	cursor: auto !important;
+}
+
 .circle-header14 {
 	display: inline-block;
     left: 22px;
     border-radius: 15px;
-    background: #f2f;
     width: 23px;
     height: 23px; 
  	position: relative; 
 	left: 0; 
 	top:0px;
+	background: transparent url(/img/users-icon14.png) no-repeat 5px 5px;
 }
 
 /* a chatuser in online modus */ 
 .circle-header-norm {
-	border: 3px solid rgba(255,255,255,0.3);
-	background: transparent url('/img/users-icon14.png') no-repeat 5px 5px;
+	border: 2px solid rgba(255,255,255,0.3);
+	
 }
 /* a chatuser in PM modus  */ 
 .circle-header-pm {
-	border: 3px solid #FF0066;
+	border: 2px solid #FF0066;	/* here red */ 
 	cursor: pointer;
-	background: transparent url('/img/users-icon14.png') no-repeat 5px 5px; /* here red #FF0066 */  
+ 
 }
 /* chatuser itself */ 
 .circle-header-current {
-	border: 3px solid #006600;
-	background: transparent url('/img/users-icon14.png') no-repeat 5px 5px; /* here green */ 
-}
+	border: 2px solid #006600;	/* here green */ 
 
+}
 
 /* <span> list of online users */
 .online-user {
 	position: relative; 
 	bottom: 8px; 	
-	font-size: 15px; 
-	left: 6px;	
+	font-size: 13px; 
+	left: 4px;	
 }
 .online-user-pm {
 	color: #FF0066;
 }
 .online-user-current {
 	color: #006600;
-}
-
-
-.cursor-pointer {
-	cursor: pointer;
 }
 
 /* chat messages */
@@ -405,6 +416,10 @@ body {
 }
 .text-orange {
 	color: orange;
+}
+
+.cursor-pointer {
+	cursor: pointer;
 }
 
 a {

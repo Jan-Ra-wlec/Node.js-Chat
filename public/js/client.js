@@ -168,7 +168,7 @@ $(document).ready(function()	{
 		$('#'+div).removeClass("circle-header-norm");
 		$('#'+div).addClass("circle-header-pm");
 		$('#'+div).attr( {'title':'click again to discard private message'});
-		$('#'+span).html('private: ' + user);
+		$('#'+span).html('=> ' + user);
 		$('#'+span).addClass("online-user-pm");	//attrSpan['title'] = 'click for private message'; $("img").attr("width","500");
 		$('#'+span).attr({'title':'click again to discard private message'});
 
