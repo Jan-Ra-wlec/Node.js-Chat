@@ -19,6 +19,15 @@ module.exports = function(grunt) {
 			}
 		},
 
+        less: {
+                 development: {
+                     options: {
+                         paths: ["public/css"]
+                     },
+                     files: {"public/css/style.css": "public/less/style.less"}
+                 }
+        },
+
 		cssmin: {
 			target:{ 	
 				files: [{	
@@ -32,10 +41,11 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 	//grunt.registerTask('default', ['jshint','cssmin','uglify']);
-	grunt.registerTask('default', [ 'jshint','cssmin','uglify']);
+	grunt.registerTask('default', [ 'jshint', 'uglify', 'less' ,'cssmin',]);
 };

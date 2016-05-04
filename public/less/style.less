@@ -1,0 +1,451 @@
+
+/* ----- Our LESS Variables ---- */
+
+/* box top colors */
+@style-lightviolet: #fb1dfe;  /* ~fuchsia */
+@style-orange: #ff871e;
+@style-lightblue: #1df3fe;    /* ~ Aqua */
+
+/* userbox left down */
+@style-userpm:  @style-orange ;    /* was #ff0066 */
+@style-userself: #006600  ;	/* green */
+@style-userpm: @style-orange ;		/* was red */
+
+/* general */
+@link-color:  #2c3e50;
+@main-font-color: #ffe;
+
+
+body {
+  background: #fefef2 url('/img/blurred1.jpg') no-repeat fixed 0 0;
+
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  text-align: left;
+  font-family: 'Open Sans', sans-serif;
+	border: 0 none;
+	margin: 0;
+	padding: 0;
+}
+
+#main {
+    z-index: 50;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    overflow: hidden;
+
+    width: 1250px;
+    min-height: 450px;
+
+	color: @main-font-color;
+    font-size: 15px;
+    font-weight: 400;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.relative {
+	position: relative;
+}
+.spacer300 {
+	width:300px;
+	height: 300px;
+}
+
+/* top,left: timedisplay pink: #fb1dfe 	hellblau #1df3fe orange	#ff871e*/
+.sidebar {
+    position: fixed;
+	padding: 10px 15px;
+    overflow: hidden;
+    top: 0px;
+    left: 0px;
+    width: 318px;
+    height: 340px;  
+	border-top: 4px solid @style-lightviolet;
+   
+	background: rgb(50, 50, 50); /* Fallback */
+   	background: rgba(50, 50, 50, 0.05); 
+	 
+}
+
+.userbox {
+	padding: 10px 15px;
+    top: 360px;
+    width: 318px;
+    height: 360px;
+	position: fixed ;  
+	border-top: 4px solid  @style-orange ;
+}
+
+
+.time {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    font-size: 44px;
+    font-family: "Source Sans Pro";
+    font-weight: 200;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+.time sup { font-size: 20px }
+
+.date {
+    position: absolute;
+    top: 50px;
+    left: 17px;
+    font-size: 14px;
+    font-family: "Source Sans Pro";
+    font-weight: normal;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+.social {
+	position: absolute;
+	top: 12px;
+	left: 290px;
+	width: 45px;
+    display: inline-block;
+}
+
+.github-logo {
+	/* background-image: url('GitHub-Mark-32px.png');     span class="github-logo"   */
+	background: url('/img/GitHub-Mark-32px.png') no-repeat scroll;
+    display: inline-block;
+    height: 33px;
+    width: 33px;
+}
+
+
+.time-hr {
+    position: absolute;
+    top: 74px;
+    left: 17px;
+    font-size: 0px;
+    line-height: 0px;
+    height: 3px;
+    background: rgba(255,255,255,0.4);
+    width: 313px;
+}
+
+.top-header-chat {
+    position: fixed;
+    letter-spacing: -1px;
+    font-family: "Source Sans Pro";
+    text-decoration: none;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+	border-top: 4px solid @style-lightblue; 
+	top: 0;
+    left: 347px;
+    width: 760px;
+    height: 150px;
+
+    background-image:url('/img/bg-top-header3.png');
+    background-repeat:no-repeat;
+    background-position:0 0;
+	z-index: 55;
+}
+
+.top-header-chat-left {
+ 	top: 10px;
+    left: 15px;
+    font-size: 20px;
+	font-weight: 400;
+	text-transform: uppercase; 
+	position: absolute;
+}
+.top-servermessage	{
+ 	top: 10px;
+    left: 142px;
+	font-weight: 400;
+    font-size: 20px;
+	/* warning-red  color:#bf2659; */
+	letter-spacing: 0;
+	position: absolute;
+}
+
+.top-header-chat-right {
+ 	top: 4px;
+    left: 595px;
+	font-weight: 400;
+    font-size: 30px;
+	position: absolute;
+}
+
+
+/* TALK */
+.chat-box-plain { 
+	position: absolute;
+    top: 10px;
+    left: 14px;    
+	width: 640px;
+    height: 42px;
+}
+
+
+.chat-box-area-inset,
+.chat-box-area {
+    position: absolute;
+    /*overflow: hidden;*/
+    top: 60px;
+    left: 0px;
+    background: rgba(0,0,0,0.1);
+    width: 620px;
+    height: 32px;
+
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 12px;
+
+    -webkit-box-shadow: 1px 8px 20px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow: 1px 8px 20px 2px rgba(0,0,0,0.1);
+    -ms-box-shadow: 1px 8px 20px 2px rgba(0,0,0,0.1);
+    -o-box-shadow: 1px 8px 20px 2px rgba(0,0,0,0.1);
+    box-shadow: 1px 8px 20px 2px rgba(0,0,0,0.1);
+}
+.chat-box-area-inset {
+    top: 0;
+    left: 0;
+    border: 0;
+    background: transparent;
+    -webkit-box-shadow: inset 1px 8px 20px 2px rgba(0,0,0,0.8);
+    -moz-box-shadow: inset 1px 8px 20px 2px rgba(0,0,0,0.8);
+    -ms-box-shadow: inset 1px 8px 20px 2px rgba(0,0,0,0.8);
+    -o-box-shadow: inset 1px 8px 20px 2px rgba(0,0,0,0.8);
+    box-shadow: inset 1px 8px 20px 2px rgba(0,0,0,0.8);
+}
+
+.chat-box-input {
+    outline: 0;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    background: transparent;
+    border: 0;
+    width: 480px;
+    height: 20px;
+    font-size: 15px;
+    color: #fefef2;
+}
+
+.chat-box-button {
+    cursor: pointer;
+    outline: 0;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 98px;
+    height: 26px;
+    background: rgba(0,255,255,0.8) url('/img/chat-icon.png') no-repeat 66px 2px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 9px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: -8px 0px 12px 0px rgba(0,0,0,0.1);
+    text-align: left;
+    padding-left: 10px;
+}
+
+.logout-button {
+    cursor: pointer;
+    outline: 0;
+    position: relative;
+    top: 65px;
+    left: 650px;
+    width: 98px;
+    height: 26px;
+    background: #fb1dfe no-repeat 66px 2px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 9px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 3px 3px 20px 0px rgba(88,0,0,0.5);
+    text-align: left;
+    padding-left: 10px;
+}
+
+
+.chat-box-button:hover {
+    background-color: rgba(100,255,255,0.9)
+}
+.chat-box-button:active {
+    background-color: rgba(255,200,200,0.9)
+}
+
+/* UPDATES */
+.update-area {
+    position: absolute;
+    top: 77px;
+    left: 17px;
+}
+.update-item {
+    margin: 5px 0;
+    font-size: 14px;
+	letter-spacing: 0px;
+}
+
+.update-time,
+.chat-box-message-time {
+    display: inline-block;
+    width: 45px;
+    font-weight: 700;
+    font-size: 14px;
+}
+ 
+.update-line {
+    font-size: 0px;
+    line-height: 0px;
+    height: 1px;
+    background: rgba(255,255,255,0.3);
+    width: 300px;
+    margin: 5px 0;
+}
+
+
+
+
+/* ---- User online ---- */
+
+.onlineusers > div {
+	/*/ background: lightgray;/*/
+	letter-spacing:0;
+	float: left;
+	height: 37px;
+	width: 150px;
+	position: relative; 
+	box-sizing: border-box; 
+	cursor: auto !important;
+}
+
+.circle-header14 {
+	display: inline-block;
+    left: 22px;
+    border-radius: 15px;
+    width: 23px;
+    height: 23px; 
+ 	position: relative; 
+	left: 0; 
+	top:0px;
+	background: transparent url(/img/users-icon14.png) no-repeat 5px 5px;
+}
+
+/* a chatuser in online modus */ 
+.circle-header-norm {
+	border: 2px solid rgba(255,255,255,0.3);
+	
+}
+/* a chatuser in PM modus  */ 
+.circle-header-pm {
+	border: 2px solid @style-userpm ;	/* was red */ 
+	cursor: pointer;
+ 
+}
+/* chatuser itself */ 
+.circle-header-current {
+	border: 2px solid  @style-userself;	/* here green */ 
+
+}
+
+/* <span> list of online users */
+.online-user {
+	position: relative; 
+	bottom: 8px; 	
+	font-size: 13px; 
+	left: 4px;	
+}
+.online-user-pm {
+	color:  @style-userpm;  
+}
+.online-user-current {
+	color:  @style-userself ;
+}
+
+/* chat messages */
+.chat-box-output {
+    height: auto;    /* 568px;  */  
+    left: 347px;
+	top: 150px;
+    overflow: hidden;
+	position: relative;
+    width: 740px;	
+	padding: 0 10px 20px 15px;
+	margin-bottom: 210px;
+	word-wrap: break-word; /* css3 */ 
+
+	/* border: 1px solid #cecece;*/ 
+	 
+}	 
+.chat-box-main {
+	-o-transition:all 0.4s;
+	-moz-transition:all 0.4s;-webkit-transition:all 0.4s;transition:all 0.4s;-o-transform:;-moz-transform:;-webkit-transform:;transform:;
+	opacity:1.0;
+	margin: 10px 0 0;
+	clear: both;
+	min-height: 30px;
+}
+
+.chat-box-person {
+    width: 730px;
+    margin-top: 6px;
+	
+}
+.chat-box-person-line {
+    font-size: 0px;
+    line-height: 0px;
+    height: 1px;
+    background: rgba(255,255,255,0.3);
+    width: 740px;
+    margin: 10px 0;
+}
+
+.chat-box-message {
+    float: left;
+    font-size: 14px;
+	line-height: 125%;
+    font-weight: 500;
+    width: 520px;
+	margin: 4px 0 10px 0;
+}
+
+/*/<span>/*/
+.chat-box-message-pre {
+	color: orange;
+    width: auto;
+}
+/*/<span>/*/
+.chat-box-message-norm {
+
+}
+
+.chat-box-message-name {
+    float: left;
+    width: 130px;
+    font-weight: 700;
+}
+.chat-box-message-time {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    text-align: right;
+}
+.text-orange {
+	color: orange;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+a {
+  text-align:center;
+  margin: 10px auto;
+  width: 100%;
+  color: @link-color;
+   text-decoration: none;
+}
